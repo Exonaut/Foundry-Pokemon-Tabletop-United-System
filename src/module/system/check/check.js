@@ -4,6 +4,8 @@ import { CheckModifiersDialog } from "./dialog.js";
 import { CheckDiceModifiersDialog } from "./diceDialog.js";
 import { InitiativeRoll } from "./initiative-roll.js";
 import { CheckRoll } from "./roll.js";
+// ----------------------------------------------
+import { PTUModifier } from "../../actor/modifiers.js";
 
 class PTUCheck {
     static async roll(check, context, event, callback, diceStatistic = null) {
@@ -31,7 +33,40 @@ class PTUCheck {
             const rolled = await dialogClosed;
             if (!rolled) return null;
         }
+
+        // -----------------
+        let useAPModifier = null;
+        let owner = null;
+        // -----------------
+
         if (!context.skipDialog) {
+            // Allow the selection of AP used for a +1 modifier if possible
+            console.log(context);
+
+            let apAvailable = false;
+            const ownerID = context.actor.system.owner != null ? context.actor.system.owner : context.actor._id;
+            owner = game.actors.get(ownerID);
+            apAvailable = owner?.system?.ap?.value > 0;
+
+            console.log(owner?.system);
+            console.log("AP available: " + apAvailable);
+
+            if (apAvailable) {
+                const instinctiveAptitude = owner?.items?.find(i => i.name == "Instinctive Aptitude") != null;
+
+                useAPModifier = new PTUModifier({
+                    slug: "ap-use",
+                    label: "AP Use",
+                    modifier: instinctiveAptitude ? 2 : 1,
+                    ignored: true,
+                    enabled: false
+                });
+
+                check._modifiers.push(useAPModifier);
+                console.log(check);
+            }
+            // -----------------
+
             const dialogClosed = new Promise((resolve) => {
                 new CheckModifiersDialog(check, resolve, context).render(true);
             });
@@ -43,6 +78,20 @@ class PTUCheck {
         if (isReroll) context.rollTwice = false;
         const substitutions = context.substitutions ?? [];
         const extraTags = [];
+
+        // Remove AP if used
+        if (!isReroll && useAPModifier != null && !useAPModifier.ignored) {
+            if (owner != null) {
+                owner.update({
+                    "system.ap.value": owner.system.ap.value - 1
+                });
+            } else {
+                this.update({
+                    "system.ap.value": this.system.ap.value - 1
+                });
+            }
+        }
+        // -----------------
 
         const [dice, tagsFromDice] = (() => {
             const substitutions = context.substitutions?.filter((s) => (!s.ignored && s.predicate?.test(rollOptions)) ?? true) ?? [];

@@ -456,5 +456,17 @@ function _registerBasicHelpers() {
 
     Handlebars.registerHelper("ld", function (key, value) {
         return { hash: { [key]: value } };
-    })
+    });
+
+    Handlebars.registerHelper("add", function (a, b) {
+        return a + b;
+    });
+
+    Handlebars.registerHelper("subtract", function (a, b) {
+        return a - b;
+    });
+
+    Handlebars.registerHelper("addStats", function (a, b, c, d, e, f) {
+        return a + b + c + d + e + f;
+    });
 }

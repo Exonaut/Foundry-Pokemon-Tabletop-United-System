@@ -325,6 +325,18 @@ export class PTUCharacterSheet extends PTUActorSheet {
 			});
 		});
 
+		// AP bound
+		html.find('.ap-bound-input').change((e) => {
+			e.preventDefault();
+			const value = parseInt(e.currentTarget.value);
+			if (isNaN(value)) return;
+			this.actor.update({
+				"system.ap.bound": value < 0 ? 0 : value,
+				"system.ap.value": this.actor.system.ap.max - value < this.actor.system.ap.value ? this.actor.system.ap.max - value : this.actor.system.ap.value,
+			});
+		});
+		// ----------------------------
+
 		html.find('.voltage-range').change((e) => {
 			e.preventDefault();
 			const value = parseInt(e.currentTarget.value);
