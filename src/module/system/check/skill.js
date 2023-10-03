@@ -49,6 +49,26 @@ class PTUSkillCheck extends PTUDiceCheck {
             ...this.modifiers
         ]
 
+        // ----------------------
+        let apAvailable = false;
+        const ownerID = this.actor.system.owner != null ? this.actor.system.owner : this.actor._id;
+        const owner = game.actors.get(ownerID);
+        apAvailable = owner?.system?.ap?.value > 0;
+
+        if (apAvailable) {
+            const instinctiveAptitude = owner?.items?.find(i => i.name == "Instinctive Aptitude") != null;
+
+            const useAPModifier = new PTUModifier({
+                slug: "ap-use",
+                label: "AP Use",
+                modifier: instinctiveAptitude ? 2 : 1,
+                ignored: true
+            });
+
+            modifiers.push(useAPModifier);
+        }
+        // ----------------------
+
         diceModifiers.push(
             ...extractModifiers(this.actor.synthetics, ["all", "skill-check-dice", `skill-${this.skill}-dice`], {injectables: {move: this.item, item: this.item, actor: this.actor}, test: this.targetOptions})
         )

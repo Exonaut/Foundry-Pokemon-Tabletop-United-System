@@ -60,6 +60,26 @@ class PTUAttackCheck extends PTUDiceCheck {
             }));
         }
 
+        // ----------------------
+        let apAvailable = false;
+        const ownerID = this.actor.system.owner != null ? this.actor.system.owner : this.actor._id;
+        const owner = game.actors.get(ownerID);
+        apAvailable = owner?.system?.ap?.value > 0;
+
+        if (apAvailable) {
+            const instinctiveAptitude = owner?.items?.find(i => i.name == "Instinctive Aptitude") != null;
+
+            const useAPModifier = new PTUModifier({
+                slug: "ap-use",
+                label: "AP Use",
+                modifier: instinctiveAptitude ? 2 : 1,
+                ignored: true
+            });
+
+            modifiers.push(useAPModifier);
+        }
+        // ----------------------
+
         this.modifiers = modifiers;
 
         return this;

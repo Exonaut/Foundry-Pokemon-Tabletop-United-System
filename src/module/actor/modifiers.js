@@ -120,7 +120,8 @@ class PTUModifier {
     }
 
     test(rollOptions) {
-        this.ignored = !this.predicate.test(rollOptions);
+        // ----------------------
+        this.ignored = !this.predicate.test(rollOptions) || this.ignored;
     }
 
     toObject() {
@@ -327,7 +328,8 @@ class PTUDiceModifier {
     }
 
     test(rollOptions) {
-        this.ignored = !this.predicate.test(rollOptions);
+        // ----------------------
+        this.ignored = !this.predicate.test(rollOptions) || this.ignored;
     }
 
     toObject() {
