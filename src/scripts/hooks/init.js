@@ -65,7 +65,6 @@ export const Init = {
                 uiTop?.insertAdjacentElement("afterend", template);
             }
 
-
             // Register stuff with the Foundry client
             registerSheets();
             // registerFonts();
@@ -73,6 +72,8 @@ export const Init = {
             // registerKeybindings();
             registerSettings();
             registerTemplates();
+
+            if(game.settings.get("ptu", "devMode")) CONFIG.ui.items.prototype._onDragStart = _onDragStart;
 
             // Register Constants
             CONST = {
@@ -91,3 +92,16 @@ export const Init = {
         });
     }
 }
+
+/** @override */
+function _onDragStart(event) {
+    if ( ui.context ) ui.context.close({animate: false});
+    const li = event.currentTarget.closest(".directory-item");
+    const item = game.items.get(li.dataset.entryId);
+    if ( !item ) return;
+    const dragData = {
+        type: item.documentName,
+        data: item.toObject()
+    }
+    event.dataTransfer.setData("text/plain", JSON.stringify(dragData));
+  }
