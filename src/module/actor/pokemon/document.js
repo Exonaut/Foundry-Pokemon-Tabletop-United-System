@@ -15,7 +15,7 @@ class PTUPokemonActor extends PTUActor {
 
     get species() {
         if (this.itemTypes.species.length > 1) console.warn(`Found more than one species for ${this.name}`);
-        if(this.synthetics.speciesOverride.species) {
+        if (this.synthetics.speciesOverride.species) {
             return this.synthetics.speciesOverride.species;
         }
         return this.itemTypes.species[0];
@@ -73,8 +73,8 @@ class PTUPokemonActor extends PTUActor {
             system.skills[skill]["value"]["mod"] -= 1;
         }
 
-        if(game.settings.get("ptu", "variant.spiritPlaytest")) {
-            switch(system.spirit.value) {
+        if (game.settings.get("ptu", "variant.spiritPlaytest")) {
+            switch (system.spirit.value) {
                 case 5:
                 case 4:
                 case 3: {
@@ -119,19 +119,19 @@ class PTUPokemonActor extends PTUActor {
         }
 
         system.level.current = calculateLevel(system.level.exp);
-        
+
         system.level.expTillNextLevel = CONFIG.PTU.data.levelProgression[Math.min(system.level.current + 1, 100)];
         system.level.percent = Math.round(
             (
-                (system.level.exp - CONFIG.PTU.data.levelProgression[system.level.current]) 
-                / 
+                (system.level.exp - CONFIG.PTU.data.levelProgression[system.level.current])
+                /
                 (system.level.expTillNextLevel - CONFIG.PTU.data.levelProgression[system.level.current])
             ) * 100);
-        
+
 
         // Set attributes which are underrived data
         this.attributes = {
-            level: {current: system.level.current, tillNext: system.level.expTillNextLevel, percent: system.level.percent},
+            level: { current: system.level.current, tillNext: system.level.expTillNextLevel, percent: system.level.percent },
             health: { current: system.health.value, temp: system.tempHp, injuries: system.health.injuries },
             skills: {},
         }
@@ -148,8 +148,8 @@ class PTUPokemonActor extends PTUActor {
         }
 
         const speciesSystem = this.species.system;
-        if(!speciesSystem) {
-            if(this.species.uuid) this.reloadOnReady = true;
+        if (!speciesSystem) {
+            if (this.species.uuid) this.reloadOnReady = true;
             return console.warn(`Unable to prepare derived data for ${this.name} as its species has no system data, this is most likely caused due to having a temporary species set on reload. If so you may ignore this message.`);
         }
 
@@ -190,11 +190,6 @@ class PTUPokemonActor extends PTUActor {
 
         // Calculate Level related data
         system.levelUpPoints = system.level.current + system.modifiers.statPoints.total + 10;
-        // Calculate Stats related data
-        if (this.flags?.ptu?.is_poisoned) {
-            system.stats.spdef.stage.mod -= 2;
-        }
-
         system.stats = this._calcBaseStats();
 
         const leftoverLevelUpPoints = system.levelUpPoints - Object.values(system.stats).reduce((a, v) => v.levelUp + a, 0);
@@ -221,13 +216,13 @@ class PTUPokemonActor extends PTUActor {
         }
 
         system.typing = speciesSystem?.types ?? ['Untyped'];
-        if(types.length > 0) system.typing = types;
-        if(this.synthetics.typeOverride.typing) system.typing = this.synthetics.typeOverride.typing;
+        if (types.length > 0) system.typing = types;
+        if (this.synthetics.typeOverride.typing) system.typing = this.synthetics.typeOverride.typing;
 
         // for (const type of system.typing) {
         //     this.flags.ptu.rollOptions.all["self:types:" + type.toLowerCase()] = true;
         // }
-        if(system.shiny) this.flags.ptu.rollOptions.all["self:pokemon:shiny"] = true;
+        if (system.shiny) this.flags.ptu.rollOptions.all["self:pokemon:shiny"] = true;
 
         system.health.total = 10 + system.level.current + (system.stats.hp.total * 3);
         system.health.max = system.health.injuries > 0 ? Math.trunc(system.health.total * (1 - ((system.modifiers.hardened ? Math.min(system.health.injuries, 5) : system.health.injuries) / 10))) : system.health.total;
@@ -275,9 +270,9 @@ class PTUPokemonActor extends PTUActor {
             cute: system.contests.stats.cute
         }
         system.contests.voltage.value = this.trainer?.system?.contests?.voltage?.value ?? 0;
-        for(const stat of Object.keys(system.contests.stats)) {
+        for (const stat of Object.keys(system.contests.stats)) {
             const combatStat = (() => {
-                switch(stat) {
+                switch (stat) {
                     case "cool": return "atk";
                     case "tough": return "def";
                     case "beauty": return "spatk";
@@ -302,6 +297,8 @@ class PTUPokemonActor extends PTUActor {
 
         this.attributes.health.max = system.health.max;
 
+        this.attributes.level.cap = Math.ceil(5 + (1.58 * ((this.trainer?.system.level.current ?? 0) * (game.settings.get("ptu", "variant.trainerRevamp") ? 2 : 1))) + ((4 / 3) * (system.friendship ?? 0) * Math.pow(1 + (((this.trainer?.system.level.current ?? 0) * (game.settings.get("ptu", "variant.trainerRevamp") ? 2 : 1)) / 34), 2)));
+
         /* The Corner of Exceptions */
 
         // Shedinja will always be a special case.
@@ -317,6 +314,20 @@ class PTUPokemonActor extends PTUActor {
         const speciesStats = this.species?.system?.stats;
         for (const stat of Object.keys(stats)) {
             stats[stat].base = speciesStats?.[stat] ?? 1;
+        }
+
+        if (this.rollOptions.all["pokeedge:hybrid-attacker"]) {
+            const equalized = Math.ceil((stats.atk.base + stats.spatk.base) / 2);
+            stats.atk.base = equalized;
+            stats.spatk.base = equalized;
+        }
+        if (this.rollOptions.all["pokeedge:hybrid-defender"]) {
+            const equalized = Math.ceil((stats.def.base + stats.spdef.base) / 2);
+            stats.def.base = equalized;
+            stats.spdef.base = equalized;
+        }
+
+        for (const stat of Object.keys(stats)) {
             stats[stat].value = stats[stat].base + this.system.modifiers?.baseStats?.[stat]?.total ?? 0;
         }
 
@@ -345,26 +356,51 @@ class PTUPokemonActor extends PTUActor {
 
     // TODO: Implement rules for capability changing items
     _calcCapabilities() {
-        const capabilities = duplicate(this.species?.system?.capabilities ?? {});
-        if (!capabilities) return {};
+        const speciesCapabilities = duplicate(this.species?.system?.capabilities ?? {});
+        if (!speciesCapabilities) return {};
+
+        const finalCapabilities = {}
+        // Anything that is not a part of CONFIG.PTU.Capabilities.numericNonMovement or CONFIG.PTU.Capabilities.stringArray is considered movement, without explicitly listing them hardcoded.
+        const capsFromSpeciesOrModifiers = [...Object.keys(this.system.modifiers.capabilities), ...Object.keys(speciesCapabilities)]
+        const movementCapabilities = capsFromSpeciesOrModifiers.filter(cap => !CONFIG.PTU.Capabilities.stringArray.includes(cap) || !CONFIG.PTU.Capabilities.numericNonMovement.includes(cap))
 
         const speedCombatStages = this.system.stats.spd.stage.value + this.system.stats.spd.stage.mod;
         const spdCsChanges = speedCombatStages > 0 ? Math.floor(speedCombatStages / 2) : speedCombatStages < 0 ? Math.ceil(speedCombatStages / 2) : 0;
-        const capabilityMod = Number(this.system.modifiers.capabilities?.total ?? 0);
-        for (const key of Object.keys(capabilities)) {
-            if (key == "High Jump" || key == "Long Jump" || key == "Power" || key == "Weight Class" || key == "Naturewalk" || key == "Other") continue;
-            if (capabilities[key] > 0) {
-                capabilities[key] = Math.max(capabilities[key] + spdCsChanges + capabilityMod, capabilities[key] > 1 ? 2 : 1)
-                if (this.rollOptions.conditions?.["slowed"]) capabilities[key] = Math.max(1, Math.floor(capabilities[key] * 0.5));
-                capabilities[key] = Math.max(1, capabilities[key] + (this.system.modifiers.capabilities?.[key] ?? 0));
+        const omniMovementMod = Number(this.system.modifiers.capabilities.all) || 0;
+        const slowedMultiplier = this.rollOptions.conditions?.["slowed"] ? 0.5 : 1
+
+        for (const moveCap of movementCapabilities) {
+            // If the species got the capability naturally or through explicit modifiers
+            if (this.system.modifiers.capabilities[moveCap] || speciesCapabilities[moveCap]) {
+                const mod = this.system.modifiers?.capabilities[moveCap] ? this.system.modifiers?.capabilities[moveCap] : 0
+                const speciesCap = speciesCapabilities[moveCap] ? speciesCapabilities[moveCap] : 0
+                finalCapabilities[moveCap] = Math.max(1, Math.floor(slowedMultiplier * (speciesCap + spdCsChanges + omniMovementMod + mod)))
+            } else {
+                delete finalCapabilities[moveCap];
             }
         }
 
-        for(const key of Object.keys(this.system.modifiers.capabilities)) {
-            if(capabilities[key] === undefined) capabilities[key] = this.system.modifiers.capabilities[key];
+        for (const nonMoveCap of CONFIG.PTU.Capabilities.numericNonMovement) {
+            // If the species got the capability naturally or through explicit modifiers
+            if (this.system.modifiers.capabilities[nonMoveCap] || speciesCapabilities[nonMoveCap]) {
+                const mod = this.system.modifiers?.capabilities[nonMoveCap] ? this.system.modifiers?.capabilities[nonMoveCap] : 0
+                finalCapabilities[nonMoveCap] = Math.max(1, mod + speciesCapabilities[nonMoveCap])
+            }
         }
 
-        return capabilities;
+        // TODO allow to add more naturewalks to an actor.
+        for (const arrayCap of CONFIG.PTU.Capabilities.stringArray) {
+            finalCapabilities[arrayCap] = speciesCapabilities[arrayCap]
+        }
+
+        // Add any capability to the final capabilities not yet handled
+        for (const cap of Object.keys(speciesCapabilities)) {
+            if (!speciesCapabilities[cap] || cap in finalCapabilities) continue;
+            console.warn(`Actor ${this.uuid} had unexpected Capability ${cap} of ${speciesCapabilities[cap]}`)
+            finalCapabilities[cap] = speciesCapabilities[cap]
+        }
+
+        return finalCapabilities;
     }
 
     /** @override */
@@ -389,24 +425,24 @@ class PTUPokemonActor extends PTUActor {
                 changes["system"]["skills"][value]['value']['mod'][randomID()] = { mode: 'add', value: -1, source: "Skill Background" };
             }
         }
-        if(game.settings.get("ptu", "variant.spiritPlaytest")) {
-            if(!changes["system"]["modifiers"]) changes["system"]["modifiers"] = {}
-            if(!changes["system"]["modifiers"]["acBonus"]) changes["system"]["modifiers"]["acBonus"] = {}
-            if(!changes["system"]["modifiers"]["acBonus"]["mod"]) changes["system"]["modifiers"]["acBonus"]["mod"] = {}
-            if(!changes["system"]["modifiers"]["evasion"]) changes["system"]["modifiers"]["evasion"] = {}
-            if(!changes["system"]["modifiers"]["evasion"]["physical"]) changes["system"]["modifiers"]["evasion"]["physical"] = {}
-            if(!changes["system"]["modifiers"]["evasion"]["physical"]["mod"]) changes["system"]["modifiers"]["evasion"]["physical"]["mod"] = {}
-            if(!changes["system"]["modifiers"]["evasion"]["special"]) changes["system"]["modifiers"]["evasion"]["special"] = {}
-            if(!changes["system"]["modifiers"]["evasion"]["special"]["mod"]) changes["system"]["modifiers"]["evasion"]["special"]["mod"] = {}
-            if(!changes["system"]["modifiers"]["evasion"]["speed"]) changes["system"]["modifiers"]["evasion"]["speed"] = {}
-            if(!changes["system"]["modifiers"]["evasion"]["speed"]["mod"]) changes["system"]["modifiers"]["evasion"]["speed"]["mod"] = {}
-            if(!changes["system"]["modifiers"]["critRange"]) changes["system"]["modifiers"]["critRange"] = {}
-            if(!changes["system"]["modifiers"]["critRange"]["mod"]) changes["system"]["modifiers"]["critRange"]["mod"] = {}
-            if(!changes["system"]["modifiers"]["saveChecks"]) changes["system"]["modifiers"]["saveChecks"] = {}
-            if(!changes["system"]["modifiers"]["saveChecks"]["mod"]) changes["system"]["modifiers"]["saveChecks"]["mod"] = {}
-            if(!changes["system"]["modifiers"]["skillBonus"]) changes["system"]["modifiers"]["skillBonus"] = {}
-            if(!changes["system"]["modifiers"]["skillBonus"]["mod"]) changes["system"]["modifiers"]["skillBonus"]["mod"] = {}
-            switch(this.system.spirit.value) {
+        if (game.settings.get("ptu", "variant.spiritPlaytest")) {
+            if (!changes["system"]["modifiers"]) changes["system"]["modifiers"] = {}
+            if (!changes["system"]["modifiers"]["acBonus"]) changes["system"]["modifiers"]["acBonus"] = {}
+            if (!changes["system"]["modifiers"]["acBonus"]["mod"]) changes["system"]["modifiers"]["acBonus"]["mod"] = {}
+            if (!changes["system"]["modifiers"]["evasion"]) changes["system"]["modifiers"]["evasion"] = {}
+            if (!changes["system"]["modifiers"]["evasion"]["physical"]) changes["system"]["modifiers"]["evasion"]["physical"] = {}
+            if (!changes["system"]["modifiers"]["evasion"]["physical"]["mod"]) changes["system"]["modifiers"]["evasion"]["physical"]["mod"] = {}
+            if (!changes["system"]["modifiers"]["evasion"]["special"]) changes["system"]["modifiers"]["evasion"]["special"] = {}
+            if (!changes["system"]["modifiers"]["evasion"]["special"]["mod"]) changes["system"]["modifiers"]["evasion"]["special"]["mod"] = {}
+            if (!changes["system"]["modifiers"]["evasion"]["speed"]) changes["system"]["modifiers"]["evasion"]["speed"] = {}
+            if (!changes["system"]["modifiers"]["evasion"]["speed"]["mod"]) changes["system"]["modifiers"]["evasion"]["speed"]["mod"] = {}
+            if (!changes["system"]["modifiers"]["critRange"]) changes["system"]["modifiers"]["critRange"] = {}
+            if (!changes["system"]["modifiers"]["critRange"]["mod"]) changes["system"]["modifiers"]["critRange"]["mod"] = {}
+            if (!changes["system"]["modifiers"]["saveChecks"]) changes["system"]["modifiers"]["saveChecks"] = {}
+            if (!changes["system"]["modifiers"]["saveChecks"]["mod"]) changes["system"]["modifiers"]["saveChecks"]["mod"] = {}
+            if (!changes["system"]["modifiers"]["skillBonus"]) changes["system"]["modifiers"]["skillBonus"] = {}
+            if (!changes["system"]["modifiers"]["skillBonus"]["mod"]) changes["system"]["modifiers"]["skillBonus"]["mod"] = {}
+            switch (this.system.spirit.value) {
                 case 5:
                 case 4:
                 case 3: {

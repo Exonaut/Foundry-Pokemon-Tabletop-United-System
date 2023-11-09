@@ -108,7 +108,7 @@ export function registerSettings() {
     game.settings.register("ptu", "autoRollDamage", {
         name: "Auto roll damage",
         hint: "Automatically roll damage when a move is used.",
-        scope: "world",
+        scope: "client",
         config: true,
         type: Boolean,
         default: true
@@ -159,6 +159,42 @@ export function registerSettings() {
         config: true,
         type: Boolean,
         requiresReload: true
+    });
+
+    game.settings.register("ptu", "compendiumBrowserPacks", {
+        name: "Compendium Browser Packs",
+        hint: "Settings to exclude packs from loading.",
+        scope: "world",
+        config: false,
+        default: {},
+        type: Object,
+        onChange: () => game.ptu.compendiumBrowser.initCompendiumList()
+    });
+
+    game.settings.register("ptu", "compendiumBrowserSources", {
+        name: "Included Sources",
+        hint: "Settings to display only entries with specified sources in the compendium browser.",
+        scope: "world",
+        config: false,
+        default: {
+            ignoreAsGM: true,
+            showEmptySources: true,
+            showUnknownSources: true,
+            sources: {}
+        },
+        type: Object,
+        onChange: () => {
+            game.ptu.compendiumBrowser.packLoader.reset();
+            game.ptu.compendiumBrowser.initCompendiumList();
+        }
+    });
+
+    game.settings.register("ptu", "worldNotesFolder", {
+        name: "World Notes Folder ID",
+        scope: "world",
+        config: false,
+        default: null,
+        type: String,
     });
 
     game.settings.register("ptu", "worldSystemVersion", {

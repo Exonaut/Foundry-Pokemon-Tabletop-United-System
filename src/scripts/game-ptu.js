@@ -1,4 +1,5 @@
 import { PokemonGenerator } from "../module/actor/pokemon/generator.js"
+import { CompendiumBrowser } from "../module/apps/compendium-browser/index.js"
 import { MigrationSummary } from "../module/apps/migration-summary.js"
 import { TokenPanel } from "../module/apps/token-panel.js"
 import { StatusEffects } from "../module/canvas/status-effect.js"
@@ -11,6 +12,7 @@ import { resolveInjectedProperties, resolveValue } from "../util/value-resolver.
 import { dexSync } from "./macros/dex-sync.js"
 import { pokedex } from "./macros/pokedex.js"
 import { changeRotomForm } from "./macros/rotom-form-change.js"
+import { TypeMatrix } from "../module/apps/type-matrix.js";
 
 const GamePTU = {
     onInit() {
@@ -40,7 +42,15 @@ const GamePTU = {
             macros: {
                 changeRotomForm,
                 pokedex,
-                dexSync
+                dexSync,
+                initializeWorldNotes: (async () => {
+                    if (game.folders.getName("Actor Notes")) {
+                        return game.settings.set("ptu", "worldNotesFolder", game.folders.getName("Actor Notes").id)
+                    }
+        
+                    const folder = await Folder.create({ name: "Actor Notes", type: "JournalEntry" });
+                    return game.settings.set("ptu", "worldNotesFolder", folder.id)
+                })
             },
             tokenPanel: new TokenPanel()
         }
@@ -51,6 +61,19 @@ const GamePTU = {
     },
     onSetup() { },
     onReady() {
+        game.ptu.compendiumBrowser = new CompendiumBrowser();
+        game.ptu.typeMatrix = new TypeMatrix()
+
+        if (game.user.isGM) {
+            if (!game.settings.get("ptu", "worldNotesFolder")) {
+                game.ptu.macros.initializeWorldNotes();
+            }
+            // Else if necessary since initializeWorldNotes is async and we don't want to wait for it
+            else if (game.folders.get(game.settings.get("ptu", "worldNotesFolder")) === null) {
+                game.ptu.macros.initializeWorldNotes();
+            }
+        }
+
         // Reset pokemon that have reloadOnReady marked as true
         // This is due to having a temporary species override
         game.actors.filter(a => a.type === "pokemon" && a.reloadOnReady).forEach(a => a.reset())

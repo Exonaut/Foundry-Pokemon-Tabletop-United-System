@@ -26,6 +26,21 @@ const VariantSettingsConfig = {
         type: Boolean,
         default: false,
         requiresReload: true
+    },
+    "improvedStatsRework": {
+        name: "PTU.Settings.Variant.ImprovedStatsRework.Name",
+        hint: "PTU.Settings.Variant.ImprovedStatsRework.Hint",
+        type: Boolean,
+        default: true,
+        requiresReload: true
+    },
+    "advancementRework": {
+        name: "PTU.Settings.Variant.AdvancementRework.Name",
+        hint: "PTU.Settings.Variant.AdvancementRework.Hint",
+        type: Boolean,
+        default: false,
+        requiresReload: true,
+        hide: true
     }
 }
 

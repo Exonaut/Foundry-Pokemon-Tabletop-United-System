@@ -35,7 +35,7 @@ class PTUSkillCheck extends PTUDiceCheck {
         /** @type {PTUDiceModifier[]} */
         const diceModifiers = [
             new PTUDiceModifier({
-                diceNumber: this.actor.system.skills[this.skill]?.value?.total ?? 1,
+                diceNumber: Math.clamped(this.actor.system.skills[this.skill]?.value?.total ?? 1, 1, 6),
                 dieSize: 6,
                 label: game.i18n.format("PTU.Check.SkillDice", { skill: this.skillLabel })
             })
@@ -70,7 +70,32 @@ class PTUSkillCheck extends PTUDiceCheck {
         // ----------------------
 
         diceModifiers.push(
-            ...extractModifiers(this.actor.synthetics, ["all", "skill-check-dice", `skill-${this.skill}-dice`], {injectables: {move: this.item, item: this.item, actor: this.actor}, test: this.targetOptions})
+            ...extractModifiers(this.actor.synthetics, ["all", "skill-check-dice", `skill-${this.skill}-dice`], {injectables: {move: this.item, item: this.item, actor: this.actor}, test: this.targetOptions}).reduce((arr, mod) => {
+                if(mod instanceof PTUDiceModifier) {
+                    arr.push(mod);
+                }
+                else if(mod instanceof PTUModifier) {
+                    if(typeof mod.value === "string") {
+                        const diceNumber = Number(mod.value.match(/^-?\d+/)?.[0]);
+                        const dieSize = Number(mod.value.match(/d\d+/)?.[0]?.replace("d", ""));
+                        if(!isNaN(diceNumber) && !isNaN(dieSize)) {
+                            arr.push(new PTUDiceModifier({
+                                ...mod.toObject(),
+                                diceNumber,
+                                dieSize,
+                            }))
+                        }
+                    }
+                    else if(!isNaN(Number(mod.value))) {
+                        arr.push(new PTUDiceModifier({
+                            ...mod.toObject(),
+                            diceNumber: Number(mod.value),
+                            dieSize: 6
+                        }));
+                    }
+                }
+                return arr;
+            }, [])
         )
 
         this.modifiers = modifiers;
@@ -220,7 +245,7 @@ class PTUSkillCheck extends PTUDiceCheck {
             }
         }
 
-        const message = await this.createMessage(roll, rollMode, flags, diceDialogContext.statistic.tags, true);
+        const message = await this.createMessage({roll, rollMode, flags, extraTags: diceDialogContext.statistic.tags, inverse: true});
 
         if (callback) {
             const msg = message instanceof ChatMessage ? message : new ChatMessage(message);

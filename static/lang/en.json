@@ -132,7 +132,8 @@
     "TypeOverwrite": "Type Overwrite",
     "TempHP": "Temporary HP",
     "Effectiveness": "Effectiveness",
-    "EphemeralEffect": "Ephemeral Effect"
+    "EphemeralEffect": "Ephemeral Effect",
+    "ActionPoint": "AP Consumption"
   },
   "PTU": {
     "Skills": {
@@ -261,6 +262,7 @@
     "DamageReduction": "Damage Reduction",
     "Physical": "Physical",
     "Special": "Special",
+    "Status": "Status",
     "EvasionShort": "Eva",
     "EvasionPhysicalShort": "Phys",
     "EvasionSpecialShort": "Spec",
@@ -301,9 +303,12 @@
     "EffectPriority": "Priority",
 
     "ActionPoints": "Action Points",
+    "MaxActionPointsShort": "Max AP",
     "LevelMilestones": "Milestones",
     "LevelDexExp": "Dex Exp",
     "LevelMiscExp": "Misc Exp",
+
+    "LevelCap": "Level Cap",
 
     "Money": "Money",
     "ItemCategories": "Item Categories",
@@ -503,7 +508,10 @@
     "RollModeLabel": "Roll Mode",
 
     "Action": {
-      "AttackRoll": "{move}: Attack Roll",
+      "AttackRoll": "Accuracy Check: {move}",
+      "DamageRoll": "Damage Roll: {move}",
+      "damage-roll": "Damage Roll",
+      "attack-roll": "Accuracy Check",
       "AttackOutOfRange": "The target is out of range",
       "MoveWhileFrozen": "You can't use moves while frozen",
       "MoveWhileSleeping": "You can't use moves while sleeping",
@@ -524,7 +532,6 @@
         "Fail": "{name} is paralyzed and cannot move!",
         "Success": "{name} is paralyzed but managed to move anyway!"
       },
-      "DamageRoll": "Damage: {move}",
       "DamageSelector": "Damage Selector",
       "Damage": "Damage",
       "Apply": "Apply Damage",
@@ -672,6 +679,10 @@
         "Theme": {
           "Label": "Theme",
           "Hint": "if empty will default to your pokeball (if a pokemon) or 'default', if theme cannot be found the parchment theme will be used."
+        },
+        "Alliance": {
+          "Label": "Alliance",
+          "Hint": "The alliance of the actor."
         }
       }
     },
@@ -753,6 +764,7 @@
           "Hint": "The bar image to use for the type when displaying in Chat."
         }
       },
+
       "Variant": {
         "Name": "Variant Rules",
         "Label": "Toggle Variant Rules",
@@ -771,17 +783,17 @@
         },
         "SpiritPlaytest": {
           "Name": "Enable Friendship & Spirit [Playtest]",
-          "Hint": "Enable the Friendship & Spirit Playtest ruleset. For more info see https://ptufvtt.com/en/crockpot/spirit-and-friendship"
+          "Hint": "Enable the Friendship & Spirit Playtest ruleset. For more info see https://ptufvtt.com/Rules/Playtests/Spirit-Friendship"
+        },
+        "ImprovedStatsRework": {
+          "Name": "Enable Improved Stats Rework",
+          "Hint": "Enable the Improved Stats Rework ruleset. For more info see https://ptufvtt.com/en/Rules/Playing-The-Game/Stats#new-playtest"
         }
       },
       "Automation": {
         "Name": "Automation",
         "Label": "Toggle Automation",
         "Hint": "Enable and configure automation rules like 'Remove Expired Effects' for the system.",
-        "DexPermissions": {
-          "Name": "Pokédex Permissions",
-          "Hint": "The required permission for a player to be able to see a Pokédex entry"
-        },
         "LevelUpScreen": {
           "Name": "Show Level-Up Window",
           "Hint": "Allow the level-up window to appear whenever a Pokémon levels up."
@@ -801,6 +813,26 @@
         "FailAttackIfNoTarget": {
           "Name": "Fail Attack if No Target",
           "Hint": "Automatically fail an attack if no actor is targeted."
+        },
+        "FlankingDetection": {
+          "Name": "Flanking Detection",
+          "Hint": "Automatically apply flanking for attacks."
+        },
+        "AutoFaint": {
+          "Name": "Auto-Faint",
+          "Hint": "Automatically adds the fainted condition to a Pokémon when it reaches 0 HP."
+        },
+        "AutoFaintRecovery": {
+          "Name": "Auto-Faint Recovery",
+          "Hint": "Automatically remove the fainted condition from a Pokémon when it is healed above 0 HP."
+        },
+        "MassiveDamageThreshold": {
+          "Name": "Massive Damage (%)",
+          "Hint": "The % of max HP resulting in an Injury from Massive Damage. (A huge percentage like 10000 practically disables Injuries from this source)"
+        },
+        "HpInjuryGateInterval": {
+          "Name": "Injury HP Interval (%)",
+          "Hint": "Down from 100% max HP, reaching every interval of this percentage causes an injury. E.g. 50% => 50%, 0%, -50%, ... (A huge percentage like 10000 practically disables Injuries from this source)"
         }
       },
       "Generation": {
@@ -844,9 +876,17 @@
         "Name": "Metagame",
         "Label": "Limit Metagame information",
         "Hint": "Limit what kinds of metagame information is available to players.",
+        "DexPermissions": {
+          "Name": "Pokédex Permissions",
+          "Hint": "The required permission for a player to be able to see a Pokédex entry"
+        },
         "AlwaysShowCrits": {
           "Name": "Always Show Crits",
           "Hint": "Always show crits in the chat even if no crit was rolled."
+        },
+        "AllowPlayersToEditSpecies": {
+          "Name": "Allow Players to Edit Species",
+          "Hint": "Allow players to edit the species of their Pokémon."
         }
       },
       "Homebrew": {
@@ -946,7 +986,60 @@
         }
       }
     },
-    "ExpBudget": "EXP Reward:"
+    "ExpBudget": "EXP Reward:",
+    "TypeMatrix": {
+      "Title": "Type Chart"
+    },
+    "CompendiumBrowser": {
+      "ProgressBar": {
+        "LoadingComplete": "Loading complete",
+        "LoadingPack": "Loading {pack}"
+      },
+      "Tabs": {
+        "Abilities": "Abilities",
+        "Capabilities": "Capabilities",
+        "Edges": "Edges",
+        "Effects": "Effects",
+        "Feats": "Features",
+        "Items": "Items",
+        "Moves": "Moves",
+        "PokeEdges": "Poke Edges",
+        "Species": "Species",
+        "Settings": "Settings"
+      },
+      "PackNotLoaded": "Compendium \"{pack}\" could not be loaded.",
+      "Title": "Compendium Browser",
+      "Hint": "Please select a tab to continue...",
+      "CompendiumPacks": "Compendium Browser Packs",
+      "FilterOptions": {
+        "Source": "Source",
+        "Name": "Name",
+        "Class": "Class",
+        "Cost": "Cost",
+        "ItemType": "Item Type",
+        "MoveType": "Type",
+        "Category": "Category",
+        "DamageBase": "Damage Base",
+        "Number": "Dex Number",
+        "HasForm": "Has Form"
+      },
+      "Search": {
+        "Placeholder": "Your query...",
+        "Title": "Search"
+      },
+      "Filter": {
+        "SortBy": "Sort By",
+        "ClearFilters": "Clear Filters",
+        "AndLabel": "All of above",
+        "OrLabel": "Any of above"
+      }
+    },
+    "Alliance": {
+      "Default": "Ownership Default ({alliance})",
+      "Neutral": "Neutral",
+      "Opposition": "Opposition",
+      "Party": "Party"
+    }
   },
 
   "physical-evasion": "Physical Evasion",
@@ -966,5 +1059,9 @@
   "power": "Power",
   "naturewalk": "Naturewalk",
   "weightClass": "Weight Class",
-  "throwingRange": "Throwing Range"
+  "throwingRange": "Throwing Range",
+
+  "party": "Party",
+  "neutral": "Neutral",
+  "opposition": "Opposition"
 }
