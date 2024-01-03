@@ -43,6 +43,7 @@ export class TokenPanel extends Application {
                 id,
                 rollable: !!attack.roll,
                 effect: attack.item?.system.effect ?? "",
+                range: attack.item?.system.range ?? "",
             };
             if (attack.item.system.isStruggle) struggles.push(data);
             else attacks.push(data);
@@ -83,6 +84,12 @@ export class TokenPanel extends Application {
             })
         }
 
+        const effects = [];
+        for (const effect of actor.itemTypes.effect?.sort((a, b) => a.sort - b.sort) ?? []) {
+            if (effect.getFlag("ptu", "showInTokenPanel") === false) continue;
+            effects.push(effect);
+        }
+
         let movement = [];
         movement.push(
             {name: "Overland", value: actor.system.capabilities?.overland ?? 0, icon: "fas fa-shoe-prints"},
@@ -90,7 +97,8 @@ export class TokenPanel extends Application {
             {name: "Burrow", value: actor.system.capabilities?.burrow ?? 0, icon: "fas fa-mountain"},
             {name: "Levitate", value: actor.system.capabilities?.levitate ?? 0, icon: "fas fa-feather"},
             {name: "Sky", value: actor.system.capabilities?.sky ?? 0, icon: "fab fa-fly"},
-            {name: "Teleporter", value: actor.system.capabilities?.teleporter ?? 0, icon: "fas fa-people-arrows"}
+            {name: "Teleporter", value: actor.system.capabilities?.teleporter ?? 0, icon: "fas fa-people-arrows"},
+            {name: "Throwing", value: actor.system.capabilities?.throwingRange ?? 0, icon: "fas fa-baseball-ball"},
         );
 
         movement = movement.filter(item => item.value !== 0);
@@ -116,7 +124,7 @@ export class TokenPanel extends Application {
             show,
             party: this.#getPartyInfo(),
             conditions: actor.itemTypes.condition || [],
-            effects: actor.itemTypes.effect || [],
+            effects,
             feats,
             abilities,
             heldItem,
@@ -315,6 +323,7 @@ export class TokenPanel extends Application {
             theme: `tooltipster-shadow ball-themes ${this.actor?.sheet?.ballStyle}`,
 			position: 'top',
             maxWidth: 500,
+            contentAsHTML: true
 		});
     }
 

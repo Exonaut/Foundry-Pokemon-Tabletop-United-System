@@ -64,6 +64,27 @@ export class PTUCharacterSheet extends PTUActorSheet {
 		}
 		else data.columns = this.actor.getFlag("ptu", "itemColumns");
 
+		const IWR = this.actor.iwr;
+		data.effectiveness = {
+			weaknesses: [],
+			resistances: [],
+			immunities: []
+		}
+		for(const [type, value] of Object.entries(IWR.all)) {
+			if(value === 0) {
+				data.effectiveness.immunities.push({type: type.capitalize(), value: IWR.getRealValue(type)});
+				continue;
+			}
+			if(value > 1) {
+				data.effectiveness.weaknesses.push({type: type.capitalize(), value: IWR.getRealValue(type)});
+				continue;
+			}
+			if(value < 1) {
+				data.effectiveness.resistances.push({type: type.capitalize(), value: IWR.getRealValue(type)});
+				continue;
+			}
+		}
+
 		return data;
 	}
 
@@ -302,7 +323,7 @@ export class PTUCharacterSheet extends PTUActorSheet {
 		html.find(".item-quantity input[type='number']").change((ev) => {
 			const value = Number(ev.currentTarget.value);
 			const id = ev.currentTarget.dataset.itemId;
-			if (value > 0 && id) {
+			if (value >= 0 && id) {
 				const item = this.actor.items.get(id);
 				item?.update({ "system.quantity": value });
 			}

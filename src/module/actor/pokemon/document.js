@@ -22,7 +22,7 @@ class PTUPokemonActor extends PTUActor {
     }
 
     get allowedItemTypes() {
-        return ["species", "pokeedge", "move", "contestmove", "ability", "capability", "effect", "condition", "spiritaction"]
+        return ["species", "pokeedge", "move", "contestmove", "ability", "capability", "effect", "condition", "spiritaction", "item"]
     }
 
     get nature() {
@@ -252,6 +252,7 @@ class PTUPokemonActor extends PTUActor {
 
         // Calculate Skill Ranks
         for (const [key, skill] of Object.entries(speciesSystem?.skills ?? {})) {
+            system.skills[key].slug = key;
             system.skills[key]["value"]["value"] = skill["value"]
             system.skills[key]["value"]["total"] = skill["value"] + system.skills[key]["value"]["mod"];
             system.skills[key]["modifier"]["value"] = skill["modifier"]
@@ -297,7 +298,7 @@ class PTUPokemonActor extends PTUActor {
 
         this.attributes.health.max = system.health.max;
 
-        this.attributes.level.cap = Math.ceil(5 + (1.58 * ((this.trainer?.system.level.current ?? 0) * (game.settings.get("ptu", "variant.trainerRevamp") ? 2 : 1))) + ((4 / 3) * (system.friendship ?? 0) * Math.pow(1 + (((this.trainer?.system.level.current ?? 0) * (game.settings.get("ptu", "variant.trainerRevamp") ? 2 : 1)) / 34), 2)));
+        this.attributes.level.cap = Math.ceil(5 + (1.58 * ((this.trainer?.system.level.current ?? 0) * (["data-revamp", "short-track"].includes(game.settings.get("ptu", "variant.trainerAdvancement")) ? 2 : ["long-track"].includes(game.settings.get("ptu", "variant.trainerAdvancement")) ? 0.5 : 1))) + ((4 / 3) * (system.friendship ?? 0) * Math.pow(1 + (((this.trainer?.system.level.current ?? 0) * (["data-revamp", "short-track"].includes(game.settings.get("ptu", "variant.trainerAdvancement")) ? 2 : ["long-track"].includes(game.settings.get("ptu", "variant.trainerAdvancement")) ? 0.5 : 1)) / 34), 2)));
 
         /* The Corner of Exceptions */
 
@@ -361,7 +362,7 @@ class PTUPokemonActor extends PTUActor {
 
         const finalCapabilities = {}
         // Anything that is not a part of CONFIG.PTU.Capabilities.numericNonMovement or CONFIG.PTU.Capabilities.stringArray is considered movement, without explicitly listing them hardcoded.
-        const capsFromSpeciesOrModifiers = [...Object.keys(this.system.modifiers.capabilities), ...Object.keys(speciesCapabilities)]
+        const capsFromSpeciesOrModifiers = [...Object.keys(this.system.modifiers.capabilities), ...Object.keys(speciesCapabilities)].filter(cap => cap !== "all")
         const movementCapabilities = capsFromSpeciesOrModifiers.filter(cap => !CONFIG.PTU.Capabilities.stringArray.includes(cap) || !CONFIG.PTU.Capabilities.numericNonMovement.includes(cap))
 
         const speedCombatStages = this.system.stats.spd.stage.value + this.system.stats.spd.stage.mod;

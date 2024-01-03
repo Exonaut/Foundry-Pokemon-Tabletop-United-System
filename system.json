@@ -7,7 +7,7 @@
     "verified": "11.314",
     "maximum": 11
   },
-  "version": "4.0.0.release-candidate.3",
+  "version": "4.0.8",
   "templateVersion": 2,
   "authors": [
     {
@@ -22,7 +22,9 @@
       "name": "GSV A Nest of Kindled Embers"
     }
   ],
-  "esmodules": ["src/ptr.js"],
+  "esmodules": [
+    "src/ptr.js"
+  ],
   "socket": true,
   "styles": [
     "static/css/fonts.css",
@@ -30,7 +32,9 @@
     "static/css/main.css",
     "static/css/tooltipster.css",
     "static/css/progress-bar.css",
-    "static/css/tagify.css"
+    "static/css/tagify.css",
+    "static/css/nouislider.css",
+    "static/css/slider.css"
   ],
   "scripts": [
     "static/js/tooltipster.js",
@@ -40,7 +44,12 @@
   ],
   "flags": {
     "hotReload": {
-      "extensions": ["css", "js", "hbs", "json"]
+      "extensions": [
+        "css",
+        "js",
+        "hbs",
+        "json"
+      ]
     }
   },
   "packs": [
@@ -126,7 +135,7 @@
       "name": "species",
       "path": "packs/species.db",
       "system": "ptu"
-    }, 
+    },
     {
       "label": "PTR Macros",
       "type": "Macro",
@@ -151,9 +160,14 @@
       "lang": "en",
       "name": "English",
       "path": "static/lang/en.json"
+    },
+    {
+      "lang": "es",
+      "name": "Spanish",
+      "path": "static/lang/es.json"
     }
   ],
-  "url": "https://github.com/dylanpiera/Foundry-Pokemon-Tabletop-United-System",  
+  "url": "https://github.com/dylanpiera/Foundry-Pokemon-Tabletop-United-System",
   "manifest": "https://github.com/dylanpiera/Foundry-Pokemon-Tabletop-United-System/releases/latest/download/system.json",
   "changelog": "https://github.com/dylanpiera/Foundry-Pokemon-Tabletop-United-System/raw/master/changelog.md",
   "download": "https://github.com/dylanpiera/Foundry-Pokemon-Tabletop-United-System/releases/latest/download/system.zip"

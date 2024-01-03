@@ -63,7 +63,8 @@
     "TypeSpiritActionPlural": "Spirit Actions",
     "Modifier": "Modifier",
     "ShowInTokenPanel": "Show in Token Panel",
-    "Dice": "Base Dice"
+    "Dice": "Base Dice",
+    "Snippet": "Effect Snippet"
   },
 
   "SPECIES.Height": "Height",
@@ -155,7 +156,7 @@
       "pokemonEd": "Pokémon Education",
       "techEd": "Technology Education"
     },
-    "Title": "Pokémon Tabletop United",
+    "Title": "Pokémon Tabletop Reunited",
 
     "TabsSkills": "Skills",
     "TabsInventory": "Inventory",
@@ -236,6 +237,7 @@
     "SaveCheckAction": "Make Save",
 
     "ItemEffect": "Item Effect",
+    "HeldItems": "Held Items",
     "FoodBuff": "Food Buff",
     "HpGuidelines": "HP Guidelines",
     "16th": "1/16th",
@@ -532,6 +534,19 @@
         "Fail": "{name} is paralyzed and cannot move!",
         "Success": "{name} is paralyzed but managed to move anyway!"
       },
+      "Hypermode": {
+        "Suppressed": {
+          "One": "The effects of",
+          "Two": "are suppressed for this round."
+        },
+        "Applicable": {
+          "One": "The effects of",
+          "Two": "are in effect this round."
+        },
+        "Fail": "{name} is raging and can only use Shadow Moves!",
+        "Success": "{name} is barely containing it's rage!",
+        "Create": "{name}'s rage is getting out of hand, they entered Hyper Mode!"
+      },
       "DamageSelector": "Damage Selector",
       "Damage": "Damage",
       "Apply": "Apply Damage",
@@ -781,6 +796,15 @@
           "Name": "Use Trainer Revamp (max lvl 25)",
           "Hint": "Use DataNinja's alt. Trainer Revamp ruleset, disables Dex Exp. (see: https://shorturl.at/oCDWY)"
         },
+        "trainerAdvancement": {
+          "Name": "Trainer Advancement Track",
+          "Hint": "The Trainer Advancement Track to use for Trainer Leveling.",
+          "Original": "PTU Original Standard Progression",
+          "DataRevamp": "DataNinja's Revamped Condensed Progression",
+          "ShortTrack": "PTR Condensed Progression",
+          "PTRUpdate": "PTR Standard Progression",
+          "LongTrack": "PTR Extended Progression"
+        },
         "SpiritPlaytest": {
           "Name": "Enable Friendship & Spirit [Playtest]",
           "Hint": "Enable the Friendship & Spirit Playtest ruleset. For more info see https://ptufvtt.com/Rules/Playtests/Spirit-Friendship"
@@ -1021,7 +1045,9 @@
         "Category": "Category",
         "DamageBase": "Damage Base",
         "Number": "Dex Number",
-        "HasForm": "Has Form"
+        "HasForm": "Has Form",
+        "LearnableMoves": "Learnable Moves",
+        "Abilities": "Obtainable Abilities"
       },
       "Search": {
         "Placeholder": "Your query...",
