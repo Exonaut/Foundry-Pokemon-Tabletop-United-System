@@ -410,7 +410,7 @@ class PTUDiceCheck {
  */
 class PTUCheck {
     static async roll(check, context, event, callback, diceStatistic = null) {
-        if (event) mergeObject(context, eventToRollParams(event));
+        if (event) foundry.utils.mergeObject(context, eventToRollParams(event));
 
         context.skipDialog ??= game.settings.get("ptu", "skipRollDialog");
         context.createMessage ??= true;

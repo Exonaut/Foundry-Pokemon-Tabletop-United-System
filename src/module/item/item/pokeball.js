@@ -44,7 +44,7 @@ class PokeballItem extends PTUItemItem {
         const rollOptions = [...this.getRollOptions(selectors), ...attackRollOptions];
 
         const modifier = new StatisticModifier(this.slug, modifiers);
-        const action = mergeObject(modifier, {
+        const action = foundry.utils.mergeObject(modifier, {
             label: this.name,
             img: this.img,
             domains: selectors,
