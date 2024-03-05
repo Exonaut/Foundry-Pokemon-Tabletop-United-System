@@ -1,3 +1,6 @@
+* {
+  scrollbar-color: auto;
+}
 .compendium-sidebar.directory .directory-footer {
   flex: 0 0 30px;
   display: flex;
@@ -11,7 +14,7 @@
   white-space: pre-wrap;
 }
 .effect-popup .effect-range {
-  margin-bottom: 0.25rem;
+  margin: 0 0.25rem 0.25rem 0.25rem;
   text-align: center;
   padding: 0.25rem 1rem;
   background: #a88fff65;
@@ -655,11 +658,6 @@ a.pokedollar span::before {
   color: black;
   border-bottom: 2px solid black;
 }
-.ptu.rulebook.journal-entry-page .journal-page-header h3,
-.ptu.rulebook section.journal-entry-content .journal-page-header h3 {
-  color: lightgreen;
-  border-bottom: 2px solid lightgreen;
-}
 .ptu.rulebook.journal-entry aside.sidebar.flexcol.directory.journal-sidebar {
   color: white;
   border: unset;
@@ -1025,6 +1023,20 @@ a.pokedollar span::before {
   flex: 0 0 25px;
   display: flex;
 }
+.token-panel .main-panel .actions-accordion .action .icon.with-category,
+.token-panel .main-panel .items-accordion .action .icon.with-category {
+  flex: 0 0 44px;
+}
+.token-panel .main-panel .actions-accordion .action .icon.with-category img,
+.token-panel .main-panel .items-accordion .action .icon.with-category img {
+  height: 22px;
+  width: 22px;
+  flex: 0 0 22px;
+}
+.token-panel .main-panel .actions-accordion .action .icon.with-category img.category,
+.token-panel .main-panel .items-accordion .action .icon.with-category img.category {
+  border-radius: 0 5px 5px 0;
+}
 .token-panel .main-panel .actions-accordion .action .icon img,
 .token-panel .main-panel .items-accordion .action .icon img {
   height: 25px;
@@ -1035,13 +1047,25 @@ a.pokedollar span::before {
 }
 .token-panel .main-panel .actions-accordion .action .name,
 .token-panel .main-panel .items-accordion .action .name {
-  flex: 0 0 auto;
+  flex: 0 0 100px;
   align-self: center;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .token-panel .main-panel .actions-accordion .action .tags,
 .token-panel .main-panel .items-accordion .action .tags {
   flex: 0 0 100%;
   height: 20px;
+}
+.token-panel .main-panel .actions-accordion .action.rollable:hover .icon,
+.token-panel .main-panel .items-accordion .action.rollable:hover .icon {
+  flex: 0 0 25px;
+}
+.token-panel .main-panel .actions-accordion .action.rollable:hover .name,
+.token-panel .main-panel .items-accordion .action.rollable:hover .name {
+  flex: 0 0 120px;
 }
 .token-panel .main-panel .items-accordion .pokeball-items,
 .token-panel .main-panel .items-accordion .other-items {
@@ -1312,6 +1336,9 @@ a.pokedollar span::before {
   border: none;
   border-radius: 5px;
   position: relative;
+  height: 48px;
+  width: 52px;
+  object-fit: contain;
 }
 .token-panel .top-panel .party-overview .party-pokemon .pokemon img.black {
   border-left: 4px solid black;
@@ -2886,7 +2913,7 @@ a.content-link img {
 }
 .ptu.sheet.gen8.actor .item-list .item .item-controls,
 .ptu.sheet.gen8.dex .item-list .item .item-controls {
-  flex: 0 0 72px;
+  flex: 0 0 90px;
   justify-content: end;
   display: flex;
   flex-direction: row;
@@ -3103,6 +3130,56 @@ a.content-link img {
 }
 .ptu.sheet.gen8 .swsh-box .swsh-body.dark-body {
   background: #b3b3b3;
+}
+.ptu.weather {
+  --weather-border-divider: 1px solid var(--color-underline-header);
+}
+.ptu.weather .window-content {
+  background: #d1fed4;
+}
+.ptu.weather .hint-text {
+  flex: 0 1 auto;
+  padding-bottom: 0.5rem;
+  border-bottom: var(--weather-border-divider);
+}
+.ptu.weather .effects {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+.ptu.weather .effects .effect {
+  flex: 0 0 25px;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  padding: 0.5rem 0;
+}
+.ptu.weather .effects .effect:nth-child(even) {
+  border-top: var(--weather-border-divider);
+}
+.ptu.weather .effects .effect:last-child {
+  border-bottom: var(--weather-border-divider);
+}
+.ptu.weather .effects .effect .icon {
+  flex: 0 0 25px;
+  height: 25px;
+}
+.ptu.weather .effects .effect .name {
+  flex: 1 0 auto;
+  align-self: center;
+  font-weight: bold;
+}
+.ptu.weather .effects .effect .mode-select {
+  flex: 0 0 100px;
+}
+.ptu.weather .effects .effect .item-controls {
+  flex: 0 1 40px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-self: center;
+  justify-content: center;
+  gap: 5px;
 }
 /* -------------------------------------------- */
 /*  Item Sheet                                  */
@@ -3375,9 +3452,14 @@ a.content-link img {
 .sheet.item section form.item-sheet .sheet-body .details .item-row input {
   flex: 1 0 0;
   padding-left: 0.25rem;
+  margin: 0 0.25rem;
 }
 .sheet.item section form.item-sheet .sheet-body .details .item-row input[type="checkbox"] {
   flex: 0 0 20px;
+}
+.sheet.item section form.item-sheet .sheet-body .details .item-row select {
+  flex: 1;
+  margin: 0 0.25rem;
 }
 .sheet.item section form.item-sheet .sheet-body .details .item-row tags {
   flex: 1 0 0;
@@ -3894,6 +3976,10 @@ a.content-link img {
 .sheet.item.species .capabilities > .fb-48 {
   max-height: 270px;
 }
+.sheet.item.species .capabilities tags.tagify,
+.sheet.item.species .capabilities .tagify__input {
+  width: 100%;
+}
 .sheet.item.species .evolutions {
   padding: 0.25rem 0.75rem;
   flex-direction: column;
@@ -3988,13 +4074,22 @@ a.content-link img {
   flex: 0 0 50px;
   border: unset;
 }
-.sheet.party .party-list .party-item label {
+.sheet.party .party-list .party-item .labels {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+  text-align: center;
+}
+.sheet.party .party-list .party-item .labels label {
   text-align: center;
   align-self: center;
   margin: 0;
   padding: 0;
-  flex: 1;
   text-overflow: ellipsis;
+}
+.sheet.party .party-list .party-item .labels small {
+  font-size: 10px;
 }
 .sheet.party .party-list .party-item.empty {
   flex: 1;

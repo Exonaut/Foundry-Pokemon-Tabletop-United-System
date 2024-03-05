@@ -1,12 +1,18 @@
-2024/01/28-15:20:20.170 6cd8 Recovering log #84
-2024/01/28-15:20:20.174 6cd8 Delete type=2 #31
-2024/01/28-15:20:20.174 6cd8 Delete type=2 #59
-2024/01/28-15:20:20.174 6cd8 Delete type=0 #60
-2024/01/28-15:20:20.174 6cd8 Delete type=0 #84
-2024/01/28-15:20:20.174 6cd8 Delete type=3 #56
-2024/01/28-15:20:20.174 6cd8 Delete type=3 #58
-2024/01/28-16:28:33.195 3870 Level-0 table #91: started
-2024/01/28-16:28:33.195 3870 Level-0 table #91: 0 bytes OK
-2024/01/28-16:28:33.200 3870 Delete type=0 #89
-2024/01/28-16:28:33.202 3870 Manual compaction at level-0 from '!journal!cP772AChmDjr486z' @ 72057594037927935 : 1 .. '!journal.pages!cP772AChmDjr486z.zfGYRNnCuY6X2sS2' @ 0 : 0; will stop at (end)
-2024/01/28-16:28:33.203 3870 Manual compaction at level-1 from '!journal!cP772AChmDjr486z' @ 72057594037927935 : 1 .. '!journal.pages!cP772AChmDjr486z.zfGYRNnCuY6X2sS2' @ 0 : 0; will stop at (end)
+2024/03/02-08:55:09.767 4454 Recovering log #264
+2024/03/02-08:55:09.767 4454 Recovering log #293
+2024/03/02-08:55:09.773 4454 Delete type=0 #264
+2024/03/02-08:55:09.773 4454 Delete type=2 #286
+2024/03/02-08:55:09.773 4454 Delete type=0 #293
+2024/03/02-08:55:09.773 4454 Delete type=3 #262
+2024/03/02-10:25:23.190 ab8c Level-0 table #296: started
+2024/03/02-10:25:23.210 ab8c Level-0 table #296: 739170 bytes OK
+2024/03/02-10:25:23.215 ab8c Delete type=0 #294
+2024/03/02-10:25:23.216 ab8c Manual compaction at level-0 from '!journal!XaqlAbknAD3Tpx5E' @ 72057594037927935 : 1 .. '!journal.pages!cP772AChmDjr486z.zfGYRNnCuY6X2sS2' @ 0 : 0; will stop at (end)
+2024/03/02-10:25:23.216 ab8c Manual compaction at level-1 from '!journal!XaqlAbknAD3Tpx5E' @ 72057594037927935 : 1 .. '!journal.pages!cP772AChmDjr486z.zfGYRNnCuY6X2sS2' @ 0 : 0; will stop at '!journal.pages!cP772AChmDjr486z.zfGYRNnCuY6X2sS2' @ 60467 : 1
+2024/03/02-10:25:23.216 ab8c Compacting 1@1 + 1@2 files
+2024/03/02-10:25:23.241 ab8c Generated table #297@1: 273 keys, 739170 bytes
+2024/03/02-10:25:23.242 ab8c Compacted 1@1 + 1@2 files => 739170 bytes
+2024/03/02-10:25:23.243 ab8c compacted to: files[ 0 0 1 0 0 0 0 ]
+2024/03/02-10:25:23.243 ab8c Delete type=2 #257
+2024/03/02-10:25:23.244 ab8c Delete type=2 #296
+2024/03/02-10:25:23.436 ab8c Manual compaction at level-1 from '!journal.pages!cP772AChmDjr486z.zfGYRNnCuY6X2sS2' @ 60467 : 1 .. '!journal.pages!cP772AChmDjr486z.zfGYRNnCuY6X2sS2' @ 0 : 0; will stop at (end)

@@ -1,3 +1,7 @@
+* {
+    scrollbar-color: auto;
+}
+
 .compendium-sidebar.directory .directory-footer {
     flex: 0 0 30px;
     display: flex;
@@ -13,7 +17,7 @@
     }
 
     .effect-range {
-        margin-bottom: 0.25rem;
+        margin: 0 0.25rem 0.25rem 0.25rem;
         text-align: center;
         padding: 0.25rem 1rem;
         background: #a88fff65;
@@ -799,11 +803,6 @@ a.pokedollar {
                 color: black;
                 border-bottom: 2px solid black;
             }
-
-            h3 {
-                color: lightgreen;
-                border-bottom: 2px solid lightgreen;
-            }
         }
     }
 
@@ -1243,25 +1242,52 @@ a.pokedollar {
                 .icon {
                     flex: 0 0 25px;
 
+                    &.with-category {
+                        flex: 0 0 44px;
+
+                        img {
+                            height: 22px;
+                            width: 22px;
+                            flex: 0 0 22px;
+
+                            &.category {
+                                border-radius: 0 5px 5px 0;
+                            }
+                        }
+                    }
+
                     img {
                         height: 25px;
                         width: 25px;
                         object-fit: fill;
                         border: unset;
-                        border-radius: 5px 0 0 0
+                        border-radius: 5px 0 0 0;
                     }
 
                     display: flex;
                 }
 
                 .name {
-                    flex: 0 0 auto;
+                    flex: 0 0 100px;
                     align-self: center;
+                    font-size: 12px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
 
                 .tags {
                     flex: 0 0 100%;
                     height: 20px;
+                }
+
+                &.rollable:hover {
+                    .icon {
+                        flex: 0 0 25px;
+                    }
+                    .name {
+                        flex: 0 0 120px;
+                    }
                 }
             }
         }
@@ -1569,6 +1595,10 @@ a.pokedollar {
                         border: none;
                         border-radius: 5px;
                         position: relative;
+
+                        height: 48px;
+                        width: 52px;
+                        object-fit: contain;
 
                         &.black {
                             border-left: 4px solid black;
@@ -3516,7 +3546,7 @@ a.content-link {
                 }
 
                 .item-controls {
-                    flex: 0 0 72px;
+                    flex: 0 0 90px;
                     justify-content: end;
                     display: flex;
                     flex-direction: row;
@@ -3803,6 +3833,67 @@ a.content-link {
 
             &.dark-body {
                 background: #b3b3b3;
+            }
+        }
+    }
+}
+
+.ptu.weather {
+    --weather-border-divider: 1px solid var(--color-underline-header);
+
+    .window-content {
+        background: #d1fed4;
+    }
+    .hint-text {
+        flex: 0 1 auto;
+        padding-bottom: 0.5rem;
+        border-bottom: var(--weather-border-divider);
+
+        
+    }
+    .effects {
+        flex: 1 0 auto;
+        display: flex;
+        flex-direction: column;
+
+        .effect {
+            flex: 0 0 25px;
+            display: flex;
+            flex-direction: row;
+            gap: 5px;
+            padding: 0.5rem 0;
+
+            &:nth-child(even) {
+                border-top: var(--weather-border-divider);
+            }
+
+            &:last-child {
+                border-bottom: var(--weather-border-divider);
+            }
+
+            .icon {
+                flex: 0 0 25px;
+                height: 25px;
+            }
+            
+            .name {
+                flex: 1 0 auto;
+                align-self: center;
+                font-weight: bold;
+            }
+
+            .mode-select {
+                flex: 0 0 100px;
+            }
+            
+            .item-controls {
+                flex: 0 1 40px;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-self: center;
+                justify-content: center;
+                gap: 5px;
             }
         }
     }
@@ -4134,10 +4225,16 @@ a.content-link {
                         input {
                             flex: 1 0 0;
                             padding-left: 0.25rem;
+                            margin: 0 0.25rem;
 
                             &[type="checkbox"] {
                                 flex: 0 0 20px;
                             }
+                        }
+
+                        select {
+                            flex: 1;
+                            margin: 0 0.25rem;
                         }
 
                         tags {
@@ -4763,6 +4860,11 @@ a.content-link {
             &>.fb-48 {
                 max-height: 270px;
             }
+
+            tags.tagify,
+            .tagify__input {
+                width: 100%;
+            }
         }
 
         .evolutions {
@@ -4884,13 +4986,23 @@ a.content-link {
                 border: unset;
             }
 
-            label {
-                text-align: center;
-                align-self: center;
-                margin: 0;
-                padding: 0;
+            .labels {
+                display: flex;
+                flex-direction: column;
                 flex: 1;
-                text-overflow: ellipsis;
+                justify-content: center;
+                text-align: center;
+
+                label {
+                    text-align: center;
+                    align-self: center;
+                    margin: 0;
+                    padding: 0;
+                    text-overflow: ellipsis;
+                }
+                small {
+                    font-size: 10px;
+                }
             }
 
             &.empty {

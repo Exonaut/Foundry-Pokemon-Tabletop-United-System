@@ -363,8 +363,11 @@ class PTUCondition extends BaseEffectPTU {
         const result = await statistic.roll({ skipDialog: true, targets });
         const effective = statistic.dc.value <= result.total;
 
-        if (effective) {
-            //TODO: Apply Vulnerable for 1 round
+        if (!effective) {
+            const vulnerable = await fromUuid('Compendium.ptu.effects.Item.wqzPWKMbwvOWLVoI');
+            const data = vulnerable.toObject();
+            data.system.duration = { value: 1, unit: 'rounds', expiry: 'turn-start'};
+            await actor.createEmbeddedDocuments("Item", [data]);
         }
 
         return await ChatMessage.create({
