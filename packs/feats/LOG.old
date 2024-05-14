@@ -1,17 +1,14 @@
-2024/03/02-08:55:09.593 92c4 Recovering log #969
-2024/03/02-08:55:09.593 92c4 Recovering log #998
-2024/03/02-08:55:09.597 92c4 Delete type=0 #969
-2024/03/02-08:55:09.597 92c4 Delete type=2 #991
-2024/03/02-08:55:09.597 92c4 Delete type=0 #998
-2024/03/02-08:55:09.598 92c4 Delete type=3 #967
-2024/03/02-10:25:22.898 ab8c Level-0 table #1001: started
-2024/03/02-10:25:22.912 ab8c Level-0 table #1001: 815219 bytes OK
-2024/03/02-10:25:22.915 ab8c Delete type=0 #999
-2024/03/02-10:25:22.948 ab8c Manual compaction at level-0 from '!folders!18LvSoVBoPmxJnOL' @ 72057594037927935 : 1 .. '!items!zy3F5IZmiosjU2HJ' @ 0 : 0; will stop at '!items!zy3F5IZmiosjU2HJ' @ 21401 : 1
-2024/03/02-10:25:22.948 ab8c Compacting 1@0 + 1@1 files
-2024/03/02-10:25:22.970 ab8c Generated table #1002@0: 1208 keys, 817488 bytes
-2024/03/02-10:25:22.970 ab8c Compacted 1@0 + 1@1 files => 817488 bytes
-2024/03/02-10:25:22.972 ab8c compacted to: files[ 0 1 0 0 0 0 0 ]
-2024/03/02-10:25:22.972 ab8c Delete type=2 #971
-2024/03/02-10:25:22.972 ab8c Delete type=2 #1001
-2024/03/02-10:25:22.985 ab8c Manual compaction at level-0 from '!items!zy3F5IZmiosjU2HJ' @ 21401 : 1 .. '!items!zy3F5IZmiosjU2HJ' @ 0 : 0; will stop at (end)
+2024/04/07-14:24:18.031 8dd4 Recovering log #1077
+2024/04/07-14:24:18.035 8dd4 Delete type=0 #1077
+2024/04/07-14:24:18.035 8dd4 Delete type=3 #1075
+2024/04/07-16:38:21.715 ad90 Level-0 table #1083: started
+2024/04/07-16:38:21.715 ad90 Level-0 table #1083: 1429 bytes OK
+2024/04/07-16:38:21.717 ad90 Delete type=0 #1081
+2024/04/07-16:38:21.722 ad90 Manual compaction at level-0 from '!folders!18LvSoVBoPmxJnOL' @ 72057594037927935 : 1 .. '!items!zy3F5IZmiosjU2HJ' @ 0 : 0; will stop at '!items!wofek8HCsEo9ILtw' @ 24429 : 1
+2024/04/07-16:38:21.722 ad90 Compacting 1@0 + 1@1 files
+2024/04/07-16:38:21.736 ad90 Generated table #1084@0: 1402 keys, 962453 bytes
+2024/04/07-16:38:21.736 ad90 Compacted 1@0 + 1@1 files => 962453 bytes
+2024/04/07-16:38:21.738 ad90 compacted to: files[ 0 1 0 0 0 0 0 ]
+2024/04/07-16:38:21.738 ad90 Delete type=2 #1079
+2024/04/07-16:38:21.738 ad90 Delete type=2 #1083
+2024/04/07-16:38:21.751 ad90 Manual compaction at level-0 from '!items!wofek8HCsEo9ILtw' @ 24429 : 1 .. '!items!zy3F5IZmiosjU2HJ' @ 0 : 0; will stop at (end)
